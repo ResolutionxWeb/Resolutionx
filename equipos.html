@@ -80,7 +80,7 @@
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label for="inputTemporada">Temporada</label>
-                                            <input type="text" class="form-control" id="inputTemporada" placeholder="Temporada" required>
+                                            <input type="text" class="form-control" id="inputTemporada" placeholder="Temporada (Año1/Año2)" required>
                                         </div>
                                     </div>
                                     <br>
@@ -199,7 +199,7 @@
                     if(temporada[1] == null){
                         iziToast.error({
                             title:"Error",
-                            message:"El formato de la temporada no es valido(Nº1/Nº2)",
+                            message:"El formato de la temporada no es valido (Año1/Año2 por ejemplo: 22/23)",
                             position:"topLeft"
                             
                         });
@@ -208,7 +208,7 @@
                     } else if(input.length != 5){
                         iziToast.error({
                             title:"Error",
-                            message:"El formato de la temporada no es valido debe tener 5 digitos(XX/XX)",
+                            message:"El formato de la temporada no es valido debe tener 5 digitos (Año1/Año2 por ejemplo: 22/23)",
                             position:"topLeft"
                             
                         });
@@ -221,7 +221,7 @@
                         } else {
                             iziToast.error({
                                 title:"Error",
-                                message:"El formato de la temporada no es valido(Nº1/Nº2), el Nº1 debe ser un año antes que el Nº2",
+                                message:"El formato de la temporada no es valido(Año1/Año2 por ejemplo: 22/23), el Nº1 debe ser un año antes que el Nº2",
                                 position:"topLeft"
                             });
                             document.getElementById("crearEquipoC").disabled = true;
