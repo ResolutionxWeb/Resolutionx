@@ -1,0 +1,11 @@
+{
+    "name": "shurklex/resolutionx",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Resolution X",
+            "email": "resolutionxweb@gmail.com"
+        }
+    ],
+    "require": {}
+}
