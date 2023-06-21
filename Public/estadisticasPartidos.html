@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Equipos</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet">
+    <link href="assets/styles/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/iziToast-master/dist/css/iziToast.min.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3">Resolutionx</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+            </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" onclick="eliminarRegistros()">Eliminar Registros</a></li>
+                    <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar Sesion</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Equipos</div>
+                        <a class="nav-link" href="equipos.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                            Equipos
+                        </a>
+                        <a class="nav-link" href="equipo.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                            Equipo actual
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Jugadores</div>
+                        <a class="nav-link" href="jugadores.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                            Jugadores
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Partidos</div>
+                        <a class="nav-link" href="partidos.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-p"></i></div>
+                            Partidos
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Estadisticas</div>
+                        <a class="nav-link" href="estadisticas.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-column"></i></div>
+                            Estadisticas
+                        </a>
+                        <a class="nav-link" href="estadisticasPartidos.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-column"></i></div>
+                            Estadisticas Partidos
+                        </a>
+                        <a id="botonEstadisticas" class="nav-link" onclick="openModal()">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-column"></i></div>
+                            Crear Estadistica
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <h1 id="nombreEquipo" class="mt-4">Estadisticas de los partidos Sinfin Masculino</h1>
+                <div id="contenedorEstadisticas" class="container-fluid px-4">
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <h2>Crear Estadistica</h2>
+                            <form id="formulario">
+                                <input type="text" class="form-control" id="inputPosicion" hidden>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputJugador">Jugador</label>
+                                        <select class="form-control" id="inputJugador" placeholder="Jugador" required>
+                                            <option value="">-- Seleccionar Jugador --</option>
+                                        </select>
+                                    </div>
+                                     <div class="form-group col-md-4">
+                                        <label for="inputPartido">Partido</label>
+                                        <select class="form-control" id="inputPartido" placeholder="Partido" required>
+                                            <option value="">-- Seleccionar Partido --</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputLanzamientos">Lanzamientos</label>
+                                        <input type="number" class="form-control" id="inputLanzamientos" placeholder="Lanzamientos" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputGoles">Goles</label>
+                                        <input type="number" class="form-control" id="inputGoles" placeholder="Goles" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPerdidas">Perdidas</label>
+                                        <input type="number" class="form-control" id="inputPerdidas" placeholder="Perdidas" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputRecuperaciones">Recuperaciones</label>
+                                        <input type="number" class="form-control" id="inputRecuperaciones" placeholder="Recuperaciones" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPorterosLanzamientos">Lanzamientos Recibidos</label>
+                                        <input type="number" class="form-control" id="inputPorterosLanzamientos" placeholder="Lanzamientos Recibidos" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputParadas">Paradas</label>
+                                        <input type="number" class="form-control" id="inputParadas" placeholder="Paradas" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPorteroGoles">Goles Recibidos</label>
+                                        <input type="number" class="form-control" id="inputPorteroGoles" placeholder="Goles Recibidos" required>
+                                    </div>
+                                </div>
+                                <br>
+                            </form>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <button id="crearEstadisticaC" class="btn btn-primary">Crear Estadistica y cerrar</button>
+                                    <button id="crearEstadisticaN" class="btn btn-primary">Crear Estadistica y nuevo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; 2023 Alejandro Fernandez Tolosa ResolutionX - Todos los
+                            derechos reservados.</div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="assets/equipos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="assets/jquery.min.js"></script>
+    <script src="assets/iziToast-master/dist/js/iziToast.min.js"></script>
+
+    <script>
+        window.addEventListener("load", function (event) {
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: 'estadisticasPartidos.php',
+                data: {
+                    accion: 'estadisticasPartidoJugadores'
+                },
+                success: function(response) {
+                    if(response == false){
+                        iziToast.info({
+                            title: "Vacio",
+                            message: "Aun no hay registros de estadisticas de Jugadores, crealos antes de continuar",
+                            position: "topLeft"
+                        });
+                    } else {
+                        var contenedorTablas = document.getElementById("contenedorEstadisticas");
+                        var rival = "";
+
+                        for(var i = 0; i < response.length; i++) {
+                            var item = response[i];
+
+                            if(rival == item['ID_Partido']){
+                                const elementos = document.querySelectorAll('#jugadores');
+                                const ultimoElemento = elementos[elementos.length - 1];
+
+                                ultimoElemento.innerHTML = ultimoElemento.innerHTML + '<tr>'
+                                    +'<td>'+item.Dorsal+''
+                                    +'<td>'+item.Nombre+''
+                                    +'<td>'+item.Lanzamientos+''
+                                    +'<td>'+item.Goles+''
+                                    +'<td>'+Math.floor((item.Goles/item.Lanzamientos)*100)+'%'
+                                    +'<td>'+item.Perdidas+''
+                                    +'<td>'+item.Recuperaciones+'';
+                            } else {
+                                rival = item['ID_Partido'];
+
+                                var divCard = document.createElement("div");
+                                divCard.className = "card mb-4";
+
+                                var divCardHeader = document.createElement("div");
+                                divCardHeader.className = "card-header";
+
+                                var iElement = document.createElement("i");
+                                iElement.className = "fas fa-table me-1";
+
+                                var texto = document.createTextNode("Estadisticas de Campo " + item.Rival + " " + item.Campeonato + " "+ item.Jornada);
+
+                                divCardHeader.appendChild(iElement);
+                                divCardHeader.appendChild(texto);
+
+                                var divBody = document.createElement("div");
+                                divBody.className = "card-body";
+
+                                var table = document.createElement("table");
+                                table.id = "datatablesSimple";
+
+                                var thead = document.createElement("thead");
+                                var trH = document.createElement("tr");
+                                trH.innerHTML = trH.innerHTML +"<th>Dorsal"
+                                    +"<th>Nombre"
+                                    +"<th>Lanzamientos"
+                                    +"<th>Goles"                                        
+                                    +"<th>Porcentaje"
+                                    +"<th>Perdidas"
+                                    +"<th>Recuperaciones";
+                                    
+
+                                var tfoot = document.createElement("tfoot");
+                                var trF = document.createElement("tr");
+                                trF.innerHTML = trF.innerHTML +"<th>Dorsal"
+                                    + "<th>Nombre"
+                                    +"<th>Lanzamientos"
+                                    +"<th>Goles"                                        
+                                    +"<th>Porcentaje"
+                                    +"<th>Perdidas"
+                                    +"<th>Recuperaciones";
+                                
+                                var tbody = document.createElement("tbody");
+                                tbody.id = "jugadores";
+
+                                tbody.innerHTML = tbody.innerHTML + '<tr>'
+                                    +'<td>'+item.Dorsal+''
+                                    +'<td>'+item.Nombre+''
+                                    +'<td>'+item.Lanzamientos+''
+                                    +'<td>'+item.Goles+''
+                                    +'<td>'+Math.floor((item.Goles/item.Lanzamientos)*100)+'%'
+                                    +'<td>'+item.Perdidas+''
+                                    +'<td>'+item.Recuperaciones+'';
+                                    
+
+
+                                thead.appendChild(trH);
+                                table.appendChild(thead);
+                                tfoot.appendChild(trF);
+                                table.appendChild(tfoot);
+                                table.appendChild(tbody);
+                                divBody.appendChild(table);
+                                
+
+
+                                divCard.appendChild(divCardHeader);
+                                divCard.appendChild(divBody);
+
+                                contenedorTablas.appendChild(divCard);
+
+                            }
+                        }
+                        const datatablesSimple = document.getElementById('datatablesSimple');
+                        const tablas = document.querySelectorAll('table#datatablesSimple');
+                        tablas.forEach(tabla => {
+                            if (datatablesSimple) {
+                                new simpleDatatables.DataTable(tabla);
+                            }
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "Hubo un error desplegando las estadisticas, si el problema persiste, contacta con el administrador.",
+                        position: "topLeft"
+                    });
+                },
+            });
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: 'estadisticasPartidos.php',
+                data: {
+                    accion: 'estadisticasPartidoPorteros',
+                },
+                success: function(response) {
+                    if(response == false){
+                        iziToast.info({
+                            title: "Vacio",
+                            message: "Aun no hay registros de estadisticas de Porteros, crealos antes de continuar",
+                            position: "topLeft"
+                        });
+                    } else {
+                        var contenedorTablas = document.getElementById("contenedorEstadisticas");
+                        var rival = "";
+
+                        for(var i = 0; i < response.length; i++) {
+                            var item = response[i];
+
+                            if(rival == item.Rival){
+                                const elementos = document.querySelectorAll('#porteros');
+                                const ultimoElemento = elementos[elementos.length - 1];
+
+                                ultimoElemento.innerHTML = ultimoElemento.innerHTML + '<tr>'
+                                    +'<td>'+item.Dorsal+''
+                                    +'<td>'+item.Nombre+''
+                                    +'<td>'+item.LanzamientosP+''
+                                    +'<td>'+item.Paradas+''
+                                    +'<td>'+item.GolesRecibidos+''
+                                    +'<td>'+Math.floor((item.Paradas/item.LanzamientosP)*100)+'%';
+                                    
+                            } else {
+
+                                rival = item.Rival;
+
+                                var divCard = document.createElement("div");
+                                divCard.className = "card mb-4";
+
+                                var divCardHeader = document.createElement("div");
+                                divCardHeader.className = "card-header";
+
+                                var iElement = document.createElement("i");
+                                iElement.className = "fas fa-table me-1";
+
+                                var texto = document.createTextNode("Estadisticas de Porteria " + item.Rival + " " + item.Campeonato + " "+ item.Jornada);
+
+                                divCardHeader.appendChild(iElement);
+                                divCardHeader.appendChild(texto);
+
+                                var divBody = document.createElement("div");
+                                divBody.className = "card-body";
+
+                                var table = document.createElement("table");
+                                table.id = "datatablesSimple";
+
+                                var thead = document.createElement("thead");
+                                var trH = document.createElement("tr");
+                                trH.innerHTML = trH.innerHTML + "<th>Dorsal"
+                                    +"<th>Nombre"
+                                    +"<th>Lanzamientos Recibidos"
+                                    +"<th>Paradas"                                        
+                                    +"<th>Goles Recibidos"
+                                    +"<th>Porcetaje"
+                                    +"";;
+
+                                var tfoot = document.createElement("tfoot");
+                                var trF = document.createElement("tr");
+                                trF.innerHTML = trF.innerHTML + "<th>Dorsal"
+                                    +"<th>Nombre"
+                                    +"<th>Lanzamientos Recibidos"
+                                    +"<th>Paradas"                                        
+                                    +"<th>Goles Recibidos"
+                                    +"<th>Porcetaje"
+                                    +"";;
+                                
+                                var tbody = document.createElement("tbody");
+                                tbody.id = "porteros";
+
+                                tbody.innerHTML = tbody.innerHTML + '<tr>'
+                                    +'<td>'+item.Dorsal+''
+                                    +'<td>'+item.Nombre+''
+                                    +'<td>'+item.LanzamientosP+''
+                                    +'<td>'+item.Paradas+''
+                                    +'<td>'+item.GolesRecibidos+''
+                                    +'<td>'+Math.floor((item.Paradas/item.LanzamientosP)*100)+'%';
+
+
+                                thead.appendChild(trH);
+                                table.appendChild(thead);
+                                tfoot.appendChild(trF);
+                                table.appendChild(tfoot);
+                                table.appendChild(tbody);
+                                divBody.appendChild(table);
+                                
+
+
+                                divCard.appendChild(divCardHeader);
+                                divCard.appendChild(divBody);
+
+                                contenedorTablas.appendChild(divCard);
+
+                            }
+                        }
+                        const datatablesSimple = document.getElementById('datatablesSimple');
+                        const tablas = document.querySelectorAll('table#datatablesSimple');
+                        tablas.forEach(tabla => {
+                            if (datatablesSimple) {
+                                new simpleDatatables.DataTable(tabla);
+                            }
+                        });
+                    }    
+                },
+                error: function(xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "Hubo un error desplegando las estadisticas, si el problema persiste, contacta con el administrador.",
+                        position: "topLeft"
+                    });
+                },
+            });
+
+            
+
+            //Rellenar datos de creacion de Estadisticas
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: 'estadisticas.php',
+                data: {
+                    accion: 'cargarJugadores'
+                },
+                success: function(response) {
+                    if(response == false){
+                        document.getElementById("botonEstadisticas").onclick = function() {
+                            iziToast.info({
+                                title: "Vacio",
+                                message: "Aun no hay suficientes datos, crealos antes de continuar creando estadisticas",
+                                position: "topLeft"
+                            });
+                        };
+                    } else {
+                        const selectElement = document.getElementById("inputJugador");
+
+                        for (var i = 0; i < response.length; i++) {
+                            var item = response[i];
+                            const option = document.createElement("option");
+                            option.value = ""+item.ID;
+                            option.textContent = ""+item.Nombre+" "+item.Apellidos;
+                            selectElement.appendChild(option);
+                        }
+                    }    
+                },
+                error: function(xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "Hubo un error desplegando los jugadores, si el problema persiste, contacta con el administrador.",
+                        position: "topLeft"
+                    });
+                },
+            });
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: 'estadisticas.php',
+                data: {
+                    accion: 'cargarPartidos'
+                },
+                success: function(response) {
+                    if(response == false){
+                        document.getElementById("botonEstadisticas").onclick = function() {
+                            iziToast.info({
+                                title: "Vacio",
+                                message: "Aun no hay suficientes datos, crealos antes de continuar creando estadisticas",
+                                position: "topLeft"
+                            });
+                        };
+                    } else {
+                        const selectElement = document.getElementById("inputPartido");
+
+                        for (var i = 0; i < response.length; i++) {
+                            var item = response[i];
+                            const option = document.createElement("option");
+                            option.value = ""+item.ID;
+                            option.textContent = ""+item.Campeonato+" "+item.Jornada+" "+item.Rival;
+                            selectElement.appendChild(option);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "Hubo un error desplegando los partidos, si el problema persiste, contacta con el administrador.",
+                        position: "topLeft"
+                    });
+                },
+            });
+
+            document.getElementById("inputPartido").disabled = true;
+            document.getElementById("inputLanzamientos").disabled = true;
+            document.getElementById("inputGoles").disabled = true;
+            document.getElementById("inputPerdidas").disabled = true;
+            document.getElementById("inputRecuperaciones").disabled = true;
+            document.getElementById("inputPorterosLanzamientos").disabled = true;
+            document.getElementById("inputParadas").disabled = true;
+            document.getElementById("inputPorteroGoles").disabled = true;
+
+
+        });
+
+        $(document).ready(function () {
+            $(document).on('blur', "select[id^='inputJugador']", function (e) {
+                var input = $(e.target).val();
+
+                if (input == "") {
+                    iziToast.error({
+                        title: "Error",
+                        message: "Debes elegir un jugador valido.",
+                        position: "topLeft"
+
+                    });
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: 'json',
+                        url: 'estadisticas.php',
+                        data: {
+                            accion: 'posicionJugador',
+                            id: input
+                        },
+                        success: function(response) {
+                            var posicion = document.getElementById("inputPosicion");
+
+                            for (var i = 0; i < response.length; i++) {
+                                var item = response[i];
+                                posicion.value = item.Posicion;
+                            }
+
+                            if(document.getElementById("inputPosicion").value != "Portero"){
+                                document.getElementById("inputPartido").disabled = false;
+                                document.getElementById("inputPartido").value = "";
+                                document.getElementById("inputLanzamientos").disabled = false;
+                                document.getElementById("inputLanzamientos").value = "";
+                                document.getElementById("inputGoles").disabled = false;
+                                document.getElementById("inputGoles").value = "";
+                                document.getElementById("inputPerdidas").disabled = false;
+                                document.getElementById("inputPerdidas").value = "";
+                                document.getElementById("inputRecuperaciones").disabled = false;
+                                document.getElementById("inputRecuperaciones").value = "";
+                                document.getElementById("inputPorterosLanzamientos").disabled = true;
+                                document.getElementById("inputPorterosLanzamientos").value = 0;
+                                document.getElementById("inputParadas").disabled = true;
+                                document.getElementById("inputParadas").value = 0;
+                                document.getElementById("inputPorteroGoles").disabled = true;
+                                document.getElementById("inputPorteroGoles").value = 0;
+                            } else {
+                                document.getElementById("inputPartido").disabled = false;
+                                document.getElementById("inputPartido").value = "";
+                                document.getElementById("inputLanzamientos").disabled = true;
+                                document.getElementById("inputLanzamientos").value = 0;
+                                document.getElementById("inputGoles").disabled = true;
+                                document.getElementById("inputGoles").value = 0;
+                                document.getElementById("inputPerdidas").disabled = true;
+                                document.getElementById("inputPerdidas").value = 0;
+                                document.getElementById("inputRecuperaciones").disabled = true;
+                                document.getElementById("inputRecuperaciones").value = 0;
+                                document.getElementById("inputPorterosLanzamientos").disabled = false;
+                                document.getElementById("inputPorterosLanzamientos").value = "";
+                                document.getElementById("inputParadas").disabled = false;
+                                document.getElementById("inputParadas").value = "";
+                                document.getElementById("inputPorteroGoles").disabled = false;
+                                document.getElementById("inputPorteroGoles").value = "";
+                            }
+
+                        },
+                        error: function(xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: "Hubo un error seleccionando el jugador, si el problema persiste, contacta con el administrador.",
+                                position: "topLeft"
+                            });
+                        },
+                    });
+
+                    
+                }
+            });
+
+            $(document).on('blur', "select[id^='inputPartido']", function (e) {
+                var input = $(e.target).val();
+                var jugador = document.getElementById("inputJugador").value;
+                
+                if (input == "") {
+                    iziToast.error({
+                        title: "Error",
+                        message: "Debes elegir un partido valido.",
+                        position: "topLeft"
+
+                    });
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: 'estadisticas.php',
+                        data: {
+                            accion: 'comprobarPartidoJugador',
+                            idJugador: jugador,
+                            idPartido: input
+                        },
+                        success: function(response) {
+                            if (response == true) {
+                                if(document.getElementById("inputPosicion").value != "Portero"){
+                                    document.getElementById("inputLanzamientos").disabled = false;
+                                    document.getElementById("inputGoles").disabled = false;
+                                    document.getElementById("inputPerdidas").disabled = false;
+                                    document.getElementById("inputRecuperaciones").disabled = false;
+                                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                                    document.getElementById("inputParadas").disabled = true;
+                                    document.getElementById("inputPorteroGoles").disabled = true;
+                                    document.getElementById("crearEstadisticaC").disabled = false;
+                                    document.getElementById("crearEstadisticaN").disabled = false;
+                                } else {
+                                    document.getElementById("inputLanzamientos").disabled = true;
+                                    document.getElementById("inputGoles").disabled = true;
+                                    document.getElementById("inputPerdidas").disabled = true;
+                                    document.getElementById("inputRecuperaciones").disabled = true;
+                                    document.getElementById("inputPorterosLanzamientos").disabled = false;
+                                    document.getElementById("inputParadas").disabled = false;
+                                    document.getElementById("inputPorteroGoles").disabled = false;
+                                    document.getElementById("crearEstadisticaC").disabled = false;
+                                    document.getElementById("crearEstadisticaN").disabled = false;
+                                }
+                            } else {
+                                iziToast.warning({
+                                    title: "Partido",
+                                    message: "Este jugador ya tiene estadisticas en este partido",
+                                    position: "topLeft"
+                                });
+
+                                document.getElementById("inputLanzamientos").disabled = true;
+                                document.getElementById("inputGoles").disabled = true;
+                                document.getElementById("inputPerdidas").disabled = true;
+                                document.getElementById("inputRecuperaciones").disabled = true;
+                                document.getElementById("inputPorterosLanzamientos").disabled = true;
+                                document.getElementById("inputParadas").disabled = true;
+                                document.getElementById("inputPorteroGoles").disabled = true;
+                                document.getElementById("crearEstadisticaC").disabled = true;
+                                document.getElementById("crearEstadisticaN").disabled = true;
+
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: "Hubo un error seleccionando el partido, si el problema persiste, contacta con el administrador.",
+                                position: "topLeft"
+                            });
+                        },
+                    });
+                }    
+            });
+
+            $(document).on('change', "input[id^='inputLanzamientos']", function (e) {
+                var input = parseInt($(e.target).val(),10);
+                var inputGoles = document.getElementById("inputGoles").value;
+                if(input < 0){
+                    iziToast.error({
+                        title: "Error",
+                        message: "El numero de lanzamientos no puede ser inferior a 0.",
+                        position: "topLeft"
+                    });
+                    document.getElementById("inputJugador").disabled = true;
+                    document.getElementById("inputPartido").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+                } else if (inputGoles == "") {
+                    document.getElementById("inputJugador").disabled = false;
+                    document.getElementById("inputPartido").disabled = false;
+                    document.getElementById("inputGoles").disabled = false;
+                    document.getElementById("inputPerdidas").disabled = false;
+                    document.getElementById("inputRecuperaciones").disabled = false;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = false;
+                    document.getElementById("crearEstadisticaN").disabled = false;
+                } else {
+                    var inputIntGoles = parseInt(inputGoles,10);
+                    if(inputIntGoles > input){
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de goles no puede ser superior a los lanzamientos.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputPorterosLanzamientos").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true;
+                    } else {
+                        document.getElementById("inputJugador").disabled = false;
+                        document.getElementById("inputPartido").disabled = false;
+                        document.getElementById("inputGoles").disabled = false;
+                        document.getElementById("inputPerdidas").disabled = false;
+                        document.getElementById("inputRecuperaciones").disabled = false;
+                        document.getElementById("inputPorterosLanzamientos").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = false;
+                        document.getElementById("crearEstadisticaN").disabled = false;
+                    }
+                }    
+            });
+
+            $(document).on('change', "input[id^='inputGoles']", function (e) {
+                var input = parseInt($(e.target).val(),10);
+                var inputLanzamientos = document.getElementById("inputLanzamientos").value;
+                if(input < 0){
+                    iziToast.error({
+                        title: "Error",
+                        message: "El numero de goles no puede ser inferior a 0.",
+                        position: "topLeft"
+                    });
+                    document.getElementById("inputJugador").disabled = true;
+                    document.getElementById("inputPartido").disabled = true;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+                } else if (inputLanzamientos == "") {
+                    document.getElementById("inputJugador").disabled = false;
+                    document.getElementById("inputPartido").disabled = false;
+                    document.getElementById("inputLanzamientos").disabled = false;
+                    document.getElementById("inputPerdidas").disabled = false;
+                    document.getElementById("inputRecuperaciones").disabled = false;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = false;
+                    document.getElementById("crearEstadisticaN").disabled = false;
+                } else {
+                    var inputIntLanzamiento = parseInt(inputLanzamientos,10);
+                    if(input <= inputIntLanzamiento){
+                        document.getElementById("inputJugador").disabled = false;
+                        document.getElementById("inputPartido").disabled = false;
+                        document.getElementById("inputLanzamientos").disabled = false;
+                        document.getElementById("inputPerdidas").disabled = false;
+                        document.getElementById("inputRecuperaciones").disabled = false;
+                        document.getElementById("inputPorterosLanzamientos").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = false;
+                        document.getElementById("crearEstadisticaN").disabled = false;
+                    } else {
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de goles no puede ser superior a los lanzamientos.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputPorterosLanzamientos").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true;
+                    }    
+                }   
+            });
+
+            $(document).on('change', "input[id^='inputPerdidas']", function (e) {
+                var input = $(e.target).val();
+
+                if(input < 0){
+                    iziToast.error({
+                        title: "Error",
+                        message: "El numero de perdidas no puede ser inferior a 0.",
+                        position: "topLeft"
+                    });
+                    document.getElementById("inputJugador").disabled = true;
+                    document.getElementById("inputPartido").disabled = true;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+                } else {
+                    document.getElementById("inputJugador").disabled = false;
+                    document.getElementById("inputPartido").disabled = false;
+                    document.getElementById("inputLanzamientos").disabled = false;
+                    document.getElementById("inputGoles").disabled = false;
+                    document.getElementById("inputRecuperaciones").disabled = false;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = false;
+                    document.getElementById("crearEstadisticaN").disabled = false;
+                }    
+            });
+
+            $(document).on('change', "input[id^='inputRecuperaciones']", function (e) {
+                var input = $(e.target).val();
+
+                if(input < 0){
+                    iziToast.error({
+                        title: "Error",
+                        message: "El numero de Recuperaciones no puede ser inferior a 0.",
+                        position: "topLeft"
+                    });
+                    document.getElementById("inputJugador").disabled = true;
+                    document.getElementById("inputPartido").disabled = true;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+                } else {
+                    document.getElementById("inputJugador").disabled = false;
+                    document.getElementById("inputPartido").disabled = false;
+                    document.getElementById("inputLanzamientos").disabled = false;
+                    document.getElementById("inputGoles").disabled = false;
+                    document.getElementById("inputPerdidas").disabled = false;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = false;
+                    document.getElementById("crearEstadisticaN").disabled = false;
+                }    
+            });
+
+            $(document).on('change', "input[id^='inputPorterosLanzamientos']", function (e) {
+                var input = parseInt($(e.target).val(),10);
+                var inputParadas = document.getElementById("inputParadas").value;
+                var inputPorteroGoles = document.getElementById("inputPorteroGoles").value;
+
+                if(input < 0){
+                    iziToast.error({
+                        title: "Error",
+                        message: "El numero de lanzamientos recibidos no puede ser inferior a 0.",
+                        position: "topLeft"
+                    });
+                    document.getElementById("inputJugador").disabled = true;
+                    document.getElementById("inputPartido").disabled = true;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+                } else if (inputParadas == "" || inputPorteroGoles == "") {
+                    document.getElementById("inputJugador").disabled = false;
+                    document.getElementById("inputPartido").disabled = false;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputParadas").disabled = false;
+                    document.getElementById("inputPorteroGoles").disabled = false;
+                    document.getElementById("crearEstadisticaC").disabled = false;
+                    document.getElementById("crearEstadisticaN").disabled = false;
+                } else {
+                    var inputIntParadas = parseInt(inputParadas,10);
+                    var inputIntPorteroGoles = parseInt(inputPorteroGoles,10);
+
+                    if (input < inputIntParadas) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de lanzamientos recibidos no puede ser inferior al de paradas.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true; 
+                    } else if(input < inputIntPorteroGoles){
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de lanzamientos recibidos no puede ser inferior a los goles recibidos.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true;
+                    } else if (input != (inputIntParadas+inputIntPorteroGoles)) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de lanzamientos recibidos no cuadra con la suma de paradas y goles recibidos.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true;
+                    } else {
+                        document.getElementById("inputJugador").disabled = false;
+                        document.getElementById("inputPartido").disabled = false;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputParadas").disabled = false;
+                        document.getElementById("inputPorteroGoles").disabled = false;
+                        document.getElementById("crearEstadisticaC").disabled = false;
+                        document.getElementById("crearEstadisticaN").disabled = false
+                    }
+                }  
+            });
+
+            $(document).on('change', "input[id^='inputParadas']", function (e) {
+                var input = parseInt($(e.target).val(),10);
+                var inputPorterosLanzamientos = document.getElementById("inputPorterosLanzamientos").value;
+                var inputPorteroGoles = document.getElementById("inputPorteroGoles").value;
+
+                if(input < 0){
+                    iziToast.error({
+                        title: "Error",
+                        message: "El numero de paradas no puede ser inferior a 0.",
+                        position: "topLeft"
+                    });
+                    document.getElementById("inputJugador").disabled = true;
+                    document.getElementById("inputPartido").disabled = true;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputPorteroGoles").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+                } else if (inputPorterosLanzamientos == "" || inputPorteroGoles == "") {
+                    document.getElementById("inputJugador").disabled = false;
+                    document.getElementById("inputPartido").disabled = false;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = false;
+                    document.getElementById("inputPorteroGoles").disabled = false;
+                    document.getElementById("crearEstadisticaC").disabled = false;
+                    document.getElementById("crearEstadisticaN").disabled = false;
+                } else {
+                    var inputIntLanzamientosP = parseInt(inputPorterosLanzamientos,10);
+                    var inputIntPorteroGoles = parseInt(inputPorteroGoles,10);
+
+                    if (input > inputIntLanzamientosP) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de lanzamientos recibidos no puede ser inferior al de paradas.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputPorterosLanzamientos").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true; 
+                    } else if (inputIntLanzamientosP !== (input+inputIntPorteroGoles)) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de lanzamientos recibidos no cuadra con la suma de paradas y goles recibidos.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputPorterosLanzamientos").disabled = true;
+                        document.getElementById("inputPorteroGoles").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true;
+                    } else {
+                        document.getElementById("inputJugador").disabled = false;
+                        document.getElementById("inputPartido").disabled = false;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputPorterosLanzamientos").disabled = false;
+                        document.getElementById("inputPorteroGoles").disabled = false;
+                        document.getElementById("crearEstadisticaC").disabled = false;
+                        document.getElementById("crearEstadisticaN").disabled = false
+                    }
+                }    
+            });
+
+            $(document).on('change', "input[id^='inputPorteroGoles']", function (e) {
+                var input = parseInt($(e.target).val(),10);
+                var inputPorterosLanzamientos = document.getElementById("inputPorterosLanzamientos").value;
+                var inputParadas = document.getElementById("inputParadas").value;
+                if(input < 0){
+                    iziToast.error({
+                        title: "Error",
+                        message: "El numero de goles recibidos no puede ser inferior a 0.",
+                        position: "topLeft"
+                    });
+                    document.getElementById("inputJugador").disabled = true;
+                    document.getElementById("inputPartido").disabled = true;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = true;
+                    document.getElementById("inputParadas").disabled = true;
+                    document.getElementById("crearEstadisticaC").disabled = true;
+                    document.getElementById("crearEstadisticaN").disabled = true;
+                } else if (inputPorterosLanzamientos == "" || inputParadas == "") {
+                    document.getElementById("inputJugador").disabled = false;
+                    document.getElementById("inputPartido").disabled = false;
+                    document.getElementById("inputLanzamientos").disabled = true;
+                    document.getElementById("inputGoles").disabled = true;
+                    document.getElementById("inputPerdidas").disabled = true;
+                    document.getElementById("inputRecuperaciones").disabled = true;
+                    document.getElementById("inputPorterosLanzamientos").disabled = false;
+                    document.getElementById("inputParadas").disabled = false;
+                    document.getElementById("crearEstadisticaC").disabled = false;
+                    document.getElementById("crearEstadisticaN").disabled = false;
+                } else {
+                    var inputIntLanzamientosP = parseInt(inputPorterosLanzamientos,10);
+                    var inputIntParadas = parseInt(inputParadas,10);
+
+                    if (input > inputPorterosLanzamientos) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de lanzamientos recibidos no puede ser inferior al de goles recibidos.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputPorterosLanzamientos").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true; 
+                    } else if (inputIntLanzamientosP !== (inputIntParadas+input)) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "El numero de lanzamientos recibidos no cuadra con la suma de paradas y goles recibidos.",
+                            position: "topLeft"
+                        });
+                        document.getElementById("inputJugador").disabled = true;
+                        document.getElementById("inputPartido").disabled = true;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputPorterosLanzamientos").disabled = true;
+                        document.getElementById("inputParadas").disabled = true;
+                        document.getElementById("crearEstadisticaC").disabled = true;
+                        document.getElementById("crearEstadisticaN").disabled = true;
+                    } else {
+                        document.getElementById("inputJugador").disabled = false;
+                        document.getElementById("inputPartido").disabled = false;
+                        document.getElementById("inputLanzamientos").disabled = true;
+                        document.getElementById("inputGoles").disabled = true;
+                        document.getElementById("inputPerdidas").disabled = true;
+                        document.getElementById("inputRecuperaciones").disabled = true;
+                        document.getElementById("inputPorterosLanzamientos").disabled = false;
+                        document.getElementById("inputParadas").disabled = false;
+                        document.getElementById("crearEstadisticaC").disabled = false;
+                        document.getElementById("crearEstadisticaN").disabled = false
+                    }
+                }    
+            });
+
+            $(document).on('click',"#crearEstadisticaC", function(e) {
+                var formulario = document.getElementById("formulario");
+                if(formulario.elements.inputJugador.value != "" && formulario.elements.inputPartido.value != "" && formulario.elements.inputLanzamientos.value != "" && formulario.elements.inputGoles.value != "" && formulario.elements.inputPerdidas.value != "" && formulario.elements.inputRecuperaciones.value != "" && formulario.elements.inputPorterosLanzamientos.value != "" && formulario.elements.inputPorteroGoles.value != "" && formulario.elements.inputParadas.value != ""){
+                    $.ajax({
+                        url: 'estadisticas.php',
+                        type: 'POST',
+                        data: {
+                            accion: 'crearEstadistica',
+                            idJugador: formulario.elements.inputJugador.value,
+                            idPartido: formulario.elements.inputPartido.value,
+                            lanzamientos: formulario.elements.inputLanzamientos.value,
+                            goles: formulario.elements.inputGoles.value,
+                            perdidas: formulario.elements.inputPerdidas.value,
+                            recuperaciones: formulario.elements.inputRecuperaciones.value,
+                            lanzamientosP: formulario.elements.inputPorterosLanzamientos.value,
+                            golesRecibidos: formulario.elements.inputPorteroGoles.value,
+                            paradas: formulario.elements.inputParadas.value
+                            
+                        },
+                        success: function (response) {
+                            iziToast.success({
+                                title: 'Insertado',
+                                message: 'Estadistica insertado correctamente',
+                                position: "topLeft"
+                            });
+                            window.location.href = "estadisticas.php"
+                        },
+                        error: function (xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: "No se pudo crear la estadistica, algo salio mal, si el problema consiste, contacta con el administrador",
+                                position: "topLeft"
+
+                            });
+                        },
+                    });
+                } else {
+                    iziToast.error({
+                        title:"Error",
+                        message:"No se puede crear estadisticas con valores vacios",
+                        position:"topLeft"
+                        
+                    });
+                } 
+            });
+
+            $(document).on('click',"#crearEstadisticaN", function(e) {
+                var formulario = document.getElementById("formulario");
+                if(formulario.elements.inputJugador.value != "" && formulario.elements.inputPartido.value != "" && formulario.elements.inputLanzamientos.value != "" && formulario.elements.inputGoles.value != "" && formulario.elements.inputPerdidas.value != "" && formulario.elements.inputRecuperaciones.value != "" && formulario.elements.inputPorterosLanzamientos.value != "" && formulario.elements.inputPorteroGoles.value != "" && formulario.elements.inputParadas.value != ""){
+                    $.ajax({
+                        url: 'estadisticas.php',
+                        type: 'POST',
+                        data: {
+                            accion: 'crearEstadistica',
+                            idJugador: formulario.elements.inputJugador.value,
+                            idPartido: formulario.elements.inputPartido.value,
+                            lanzamientos: formulario.elements.inputLanzamientos.value,
+                            goles: formulario.elements.inputGoles.value,
+                            perdidas: formulario.elements.inputPerdidas.value,
+                            recuperaciones: formulario.elements.inputRecuperaciones.value,
+                            lanzamientosP: formulario.elements.inputPorterosLanzamientos.value,
+                            golesRecibidos: formulario.elements.inputPorteroGoles.value,
+                            paradas: formulario.elements.inputParadas.value
+                            
+                        },
+                        success: function (response) {
+                            iziToast.success({
+                                title: 'Insertado',
+                                message: 'Estadistica insertado correctamente',
+                                position: "topLeft"
+                            });
+
+                            formulario.reset();
+                        },
+                        error: function (xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: "No se pudo crear la estadistica, algo salio mal, si el problema consiste, contacta con el administrador",
+                                position: "topLeft"
+
+                            });
+                        },
+                    });
+                } else {
+                    iziToast.error({
+                        title:"Error",
+                        message:"No se puede crear estadisticas con valores vacios",
+                        position:"topLeft"
+                        
+                    });
+                }
+            });
+        });
+
+        function eliminarRegistros(){
+            window.location.href = "eliminar.php";
+        }
+
+        function cerrarSesion() {
+            $.ajax({
+                url: 'controllers/sql.php',
+                type: 'POST',
+                data: {
+                    accion: 'cerrarSesion'
+                },
+                success: function(response) {
+                    window.location.href = "login.html";
+                },
+                error: function(xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "No se pudo cerrar sesion, si el problema persiste, contacta con el administrador",
+                        position: "topLeft"
+                    });
+                },
+            });
+        }
+
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        function openModal() {
+            modal.style.display = "block";
+        }
+        function closeModal() {
+            window.location.href = "estadisticasPartidos.php";
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+    </script>
+</body>
+</html>

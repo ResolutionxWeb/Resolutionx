@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Equipos</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet">
+        <link href="assets/styles/app.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/iziToast-master/dist/css/iziToast.min.css">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3">Resolutionx</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" onclick="eliminarRegistros()">Eliminar Registros</a></li>
+                        <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar Sesion</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Equipos</div>
+                            <a class="nav-link" href="equipos.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                                Equipos
+                            </a>
+                        </div>                          
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 id="nombreEquipo" class="mt-4">Eliminar registros de Test</h1>
+                        <div id="registros" class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Eliminar Equipo</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" onclick="openModalEquipos()">Ver Equipos</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Eliminar Jugador</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" onclick="openModalJugadores()">Ver Jugadores</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Eliminar Partido</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" onclick="openModalPartidos()">Ver Partidos</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Eliminar Estadistica</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" onclick="openModalEstadisticas()">Ver Estadisticas</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="myEquiposModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeModal()">&times;</span>
+                                <h2>Borrar Equipo</h2>
+                                <form id="equiposFormulario">
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEquipos">Equipos</label>
+                                            <select class="form-control" id="inputEquipos" placeholder="Equipos" required>
+                                                <option value="">-- Seleccionar Equipo --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNombre">Nombre</label>
+                                            <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputLugar">Lugar</label>
+                                            <input type="text" class="form-control" id="inputLugar" placeholder="Lugar" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputCategoria">Categoria</label>
+                                            <input type="text" class="form-control" id="inputCategoria" placeholder="Categoria" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputTemporada">Temporada</label>
+                                            <input type="text" class="form-control" id="inputTemporada" placeholder="Temporada" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNumeroJugadores">N&ordm; Jugadores</label>
+                                            <input type="number" class="form-control" id="inputNumeroJugadores" placeholder="N&ordm; Jugadores" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNumeroPartidos">N&ordm; Partidos</label>
+                                            <input type="number" class="form-control" id="inputNumeroPartidos" placeholder="N&ordm; Partidos" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNumeroEstadisticas">N&ordm; Estadisticas</label>
+                                            <input type="number" class="form-control" id="inputNumeroEstadisticas" placeholder="N&ordm; Estadisticas" disabled>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <button id="borrarEquipoC" class="btn btn-danger">Borrar Equipo y cerrar</button>
+                                        <button id="borrarEquipoN" class="btn btn-danger">Borrar Equipo y borrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="myJugadoresModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeModal()">&times;</span>
+                                <h2>Borrar Jugador</h2>
+                                <form id="jugadoresFormulario">
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEquipos">Equipos</label>
+                                            <select class="form-control" id="inputEquipos" placeholder="Equipos" required>
+                                                <option value="">-- Seleccionar Equipo --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputJugadores">Jugadores</label>
+                                            <select class="form-control" id="inputJugadores" placeholder="Jugadores" required>
+                                                <option value="">-- Seleccionar Jugador --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNombre">Nombre</label>
+                                            <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputApellidos">Apellidos</label>
+                                            <input type="text" class="form-control" id="inputApellidos" placeholder="Apellidos" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPosicion">Posicion</label>
+                                            <input type="text" class="form-control" id="inputPosicion" placeholder="Posicion" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputDorsal">Dorsal</label>
+                                            <input type="number" class="form-control" id="inputDorsal" placeholder="Dorsal" disabled>
+                                        </div>                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputDNI">DNI</label>
+                                            <input type="text" class="form-control" id="inputDNI" placeholder="DNI" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNumeroPartidos">N&ordm; Partidos Jugados</label>
+                                            <input type="number" class="form-control" id="inputNumeroPartidos" placeholder="N&ordm; Partidos Jugados" disabled>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <button id="borrarJugadorC" class="btn btn-danger">Borrar Jugador y cerrar</button>
+                                        <button id="borrarJugadorN" class="btn btn-danger">Borrar Jugador y borrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="myPartidosModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeModal()">&times;</span>
+                                <h2>Borrar Partido</h2>
+                                <form id="partidosFormulario">
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEquipos">Equipos</label>
+                                            <select class="form-control" id="inputEquipos" placeholder="Equipos" required>
+                                                <option value="">-- Seleccionar Equipo --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPartidos">Partidos</label>
+                                            <select class="form-control" id="inputPartidos" placeholder="Partidos" required>
+                                                <option value="">-- Seleccionar Partido --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputRival">Rival</label>
+                                            <input type="text" class="form-control" id="inputRival" placeholder="Rival" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputResultado">Resultado</label>
+                                            <input type="text" class="form-control" id="inputResultado" placeholder="Resultado" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputCampeonato">Campeonato</label>
+                                            <input type="text" class="form-control" id="inputCampeonato" placeholder="Campeonato" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputJornada">Jornada</label>
+                                            <input type="text" class="form-control" id="inputJornada" placeholder="Jornada" disabled>
+                                        </div>                                                                                
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputFecha">Fecha</label>
+                                            <input type="text" class="form-control" id="inputFecha" placeholder="Fecha" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNumeroEstadisticas">N&ordm; Estadisticas de Partido</label>
+                                            <input type="number" class="form-control" id="inputNumeroEstadisticas" placeholder="N&ordm; Estadisticas de Partido" disabled>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <button id="borrarPartidoC" class="btn btn-danger">Borrar Partido y cerrar</button>
+                                        <button id="borrarPartidoN" class="btn btn-danger">Borrar Partido y borrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="myEstadisticasModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeModal()">&times;</span>
+                                <h2>Borrar Estadistica</h2>
+                                <form id="estadisticasFormulario">
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEquipos">Equipos</label>
+                                            <select class="form-control" id="inputEquipos" placeholder="Equipos" required>
+                                                <option value="">-- Seleccionar Equipo --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEstadisticas">Estadisticas</label>
+                                            <select class="form-control" id="inputEstadisticas" placeholder="Estadisticas" required>
+                                                <option value="">-- Seleccionar Estadisticas --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputLanzamientos">Lanzamientos</label>
+                                            <input type="number" class="form-control" id="inputLanzamientos" placeholder="Lanzamientos" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputGoles">Goles</label>
+                                            <input type="number" class="form-control" id="inputGoles" placeholder="Goles" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPerdidas">Perdidas</label>
+                                            <input type="number" class="form-control" id="inputPerdidas" placeholder="Perdidas" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputRecuperaciones">Recuperaciones</label>
+                                            <input type="number" class="form-control" id="inputRecuperaciones" placeholder="Recuperaciones" disabled>
+                                        </div>                                                                                
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPorteroLanzamientos">Lanzamientos Recibidos</label>
+                                            <input type="number" class="form-control" id="inputPorteroLanzamientos" placeholder="Lanzamientos Recibidos" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputParadas">Paradas</label>
+                                            <input type="number" class="form-control" id="inputParadas" placeholder="Paradas" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPorteroGoles">Goles Recibidos</label>
+                                            <input type="number" class="form-control" id="inputPorteroGoles" placeholder="Goles Recibidos" disabled>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <button id="borrarEstadisticasC" class="btn btn-danger">Borrar Estadistica y cerrar</button>
+                                        <button id="borrarEstadisticasN" class="btn btn-danger">Borrar Estadistica y borrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; 2023 Alejandro Fernandez Tolosa ResolutionX - Todos los derechos reservados.</div> 
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="assets/equipos.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="assets/jquery.min.js"></script>
+        <script src="assets/iziToast-master/dist/js/iziToast.min.js"></script>
+
+        <script>
+            window.addEventListener("load", function(event) {         
+
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: 'eliminar.php',
+                    data: {
+                        accion: 'desplegarEquipos'
+                    },
+                    success: function(response) {
+                        var contenedorEquipos = document.getElementById("myEquiposModal");
+                        const equipos = contenedorEquipos.getElementsByTagName("select")[0];
+
+                        for (var i = 0; i < response.length; i++) {
+                            var item = response[i];
+                            const option = document.createElement("option");
+                            option.id = ""+item.ID;
+                            option.value = ""+item.ID;
+                            option.textContent = ""+item.Nombre+" "+item.Categoria+" "+item.Temporada;
+                            equipos.appendChild(option);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Hubo un error desplegando los Equipos, si el problema persiste, contacta con el administrador.",
+                            position: "topLeft"
+                        });
+                    },
+                });
+
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: 'eliminar.php',
+                    data: {
+                        accion: 'desplegarEquipos'
+                    },
+                    success: function(response) {
+                        var contenedorEquipos = document.getElementById("myJugadoresModal");
+                        const equipos = contenedorEquipos.getElementsByTagName("select")[0];
+
+                        for (var i = 0; i < response.length; i++) {
+                            var item = response[i];
+                            const option = document.createElement("option");
+                            option.id = ""+item.ID;
+                            option.value = ""+item.ID;
+                            option.textContent = ""+item.Nombre+" "+item.Categoria+" "+item.Temporada;
+                            equipos.appendChild(option);
+                        }
+                        var formulario = document.getElementById("jugadoresFormulario");
+                        formulario.elements.inputJugadores.disabled = true;
+                    },
+                    error: function(xhr, status, error) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Hubo un error desplegando los Equipos, si el problema persiste, contacta con el administrador.",
+                            position: "topLeft"
+                        });
+                    },
+                });
+
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: 'eliminar.php',
+                    data: {
+                        accion: 'desplegarEquipos'
+                    },
+                    success: function(response) {
+                        var contenedorEquipos = document.getElementById("myPartidosModal");
+                        const equipos = contenedorEquipos.getElementsByTagName("select")[0];
+
+                        for (var i = 0; i < response.length; i++) {
+                            var item = response[i];
+                            const option = document.createElement("option");
+                            option.id = ""+item.ID;
+                            option.value = ""+item.ID;
+                            option.textContent = ""+item.Nombre+" "+item.Categoria+" "+item.Temporada;
+                            equipos.appendChild(option);
+                        }
+                        var formulario = document.getElementById("partidosFormulario");
+                        formulario.elements.inputPartidos.disabled = true;
+                    },
+                    error: function(xhr, status, error) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Hubo un error desplegando los Equipos, si el problema persiste, contacta con el administrador.",
+                            position: "topLeft"
+                        });
+                    },
+                });
+
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: 'eliminar.php',
+                    data: {
+                        accion: 'desplegarEquipos'
+                    },
+                    success: function(response) {
+                        var contenedorEquipos = document.getElementById("myEstadisticasModal");
+                        const equipos = contenedorEquipos.getElementsByTagName("select")[0];
+
+                        for (var i = 0; i < response.length; i++) {
+                            var item = response[i];
+                            const option = document.createElement("option");
+                            option.id = ""+item.ID;
+                            option.value = ""+item.ID;
+                            option.textContent = ""+item.Nombre+" "+item.Categoria+" "+item.Temporada;
+                            equipos.appendChild(option);
+                        }
+                        var formulario = document.getElementById("estadisticasFormulario");
+                        formulario.elements.inputEstadisticas.disabled = true;
+                    },
+                    error: function(xhr, status, error) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Hubo un error desplegando los Equipos, si el problema persiste, contacta con el administrador.",
+                            position: "topLeft"
+                        });
+                    },
+                });
+            });
+
+            function eliminarRegistros(){
+                window.location.href = "eliminar.php";
+            }
+
+            function cerrarSesion() {
+                $.ajax({
+                    url: 'controllers/sql.php',
+                    type: 'POST',
+                    data: {
+                        accion: 'cerrarSesion'
+                    },
+                    success: function(response) {
+                        window.location.href = "login.html";
+                    },
+                    error: function(xhr, status, error) {
+                        iziToast.error({
+                            title: "Error",
+                            message: "No se pudo cerrar sesion, si el problema persiste, contacta con el administrador",
+                            position: "topLeft"
+                        });
+                    },
+                });
+            }
+
+            $(document).ready(function() {
+                //Contenedores de Equipos
+                var contenedorEquipos = document.getElementById("myEquiposModal");
+                $(contenedorEquipos).on('blur', "select[id^='inputEquipo']", function (e) {
+                    var input = $(e.target).val();
+                    if (input == "") {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Debes elegir un equipo valido.",
+                            position: "topLeft"
+
+                        });
+                        document.getElementById("borrarEquipoC").disabled = true;
+                        document.getElementById("borrarEquipoN").disabled = true;
+
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'elegirEquipo',
+                                id: input
+                            },
+                            success: function(response) {
+                                var formulario = document.getElementById("equiposFormulario");
+                                
+                                for (var i = 0; i < response.length; i++) {
+                                    var item = response[i];
+                                    formulario.elements.inputNombre.value = item.Nombre;
+                                    formulario.elements.inputLugar.value = item.Lugar;
+                                    formulario.elements.inputCategoria.value = item.Categoria;
+                                    formulario.elements.inputTemporada.value = item.Temporada;
+                                }
+                                
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error seleccionando el equipo, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'numeroJugadoresEquipos',
+                                id: input
+                            },
+                            success: function(response) {
+                                var formulario = document.getElementById("equiposFormulario");
+                                if(response == false){
+                                    formulario.elements.inputNumeroJugadores.value = 0;
+                                } else {
+                                    formulario.elements.inputNumeroJugadores.value = response;
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error contando los jugadores del equipo, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'numeroPartidosEquipos',
+                                id: input
+                            },
+                            success: function(response) {
+                                var formulario = document.getElementById("equiposFormulario");
+                                if(response == false){
+                                    formulario.elements.inputNumeroPartidos.value = 0;
+                                } else {
+                                    formulario.elements.inputNumeroPartidos.value = response;
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error contando los partidos del equipo, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'numeroEstadisticasEquipos',
+                                id: input
+                            },
+                            success: function(response) {
+                                var formulario = document.getElementById("equiposFormulario");
+                                if(response == false){
+                                    formulario.elements.inputNumeroEstadisticas.value = 0;
+                                } else {
+                                    formulario.elements.inputNumeroEstadisticas.value = response;
+                                }
+                                
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error contando las estadisticas del equipo, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+                    }
+                });
+
+                //Contenedores Jugadores
+                var contenedorJugadores = document.getElementById("myJugadoresModal");
+                $(contenedorJugadores).on('blur', "select[id^='inputEquipos']", function (e) {
+                    var input = $(e.target).val();
+                    if (input == "") {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Debes elegir un equipo valido.",
+                            position: "topLeft"
+
+                        });
+                        document.getElementById("borrarJugadorC").disabled = true;
+                        document.getElementById("borrarJugadorN").disabled = true;
+
+                    } else {
+                        var formulario = document.getElementById("jugadoresFormulario");
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'desplegarJugadores',
+                                idEquipo: input
+                            },
+                            success: function(response) {
+                                if (response == false) {
+                                    iziToast.info({
+                                        title: "Jugadores",
+                                        message: "Este equipo no tiene jugadores que borrar",
+                                        position: "topLeft"
+
+                                    });
+                                    document.getElementById("borrarJugadorC").disabled = true;
+                                    document.getElementById("borrarJugadorN").disabled = true;
+                                } else {
+                                    formulario.elements.inputJugadores.disabled = false;
+                                    var contenedorJugadores = document.getElementById("myJugadoresModal");
+                                    const jugadores = contenedorJugadores.getElementsByTagName("select")[1];
+
+                                    for (var i = 0; i < response.length; i++) {
+                                        var item = response[i];
+                                        const option = document.createElement("option");
+                                        option.id = ""+item.ID;
+                                        option.value = ""+item.ID;
+                                        option.textContent = ""+item.Nombre+" "+item.Apellidos+" "+item.Dorsal;
+                                        jugadores.appendChild(option);
+                                    }
+                                }    
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error desplegando los Jugadores, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+                    }
+                });
+
+                $(contenedorJugadores).on('blur', "select[id^='inputJugadores']", function (e) {
+                    var input = $(e.target).val();
+                    if (input == "") {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Debes elegir un jugador valido.",
+                            position: "topLeft"
+
+                        });
+                        document.getElementById("borrarJugadorC").disabled = true;
+                        document.getElementById("borrarJugadorN").disabled = true;
+
+                    } else {
+                        var formulario = document.getElementById("jugadoresFormulario");
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'elegirJugador',
+                                id: formulario.elements.inputJugadores.value
+                            },
+                            success: function(response) {
+                                for (var i = 0; i < response.length; i++) {
+                                    var item = response[i];
+                                    formulario.elements.inputNombre.value = item.Nombre;
+                                    formulario.elements.inputApellidos.value = item.Apellidos;
+                                    formulario.elements.inputPosicion.value = item.Posicion;
+                                    formulario.elements.inputDorsal.value = item.Dorsal;
+                                    formulario.elements.inputDNI.value = item.DNI;
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error desplegando los Jugadores, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'numeroPartidosJugador',
+                                id: formulario.elements.inputJugadores.value
+                            },
+                            success: function(response) {
+                                if(response == false){
+                                    formulario.elements.inputNumeroPartidos.value = 0;
+                                } else {
+                                    formulario.elements.inputNumeroPartidos.value = response;
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error desplegando los Jugadores, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+                    }
+                });
+                
+                //Contenedores Partidos
+                var contenedorPartidos = document.getElementById("myPartidosModal");
+                $(contenedorPartidos).on('blur', "select[id^='inputEquipos']", function (e) {
+                    var input = $(e.target).val();
+                    if (input == "") {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Debes elegir un equipo valido.",
+                            position: "topLeft"
+
+                        });
+                        document.getElementById("borrarPartidoC").disabled = true;
+                        document.getElementById("borrarPartidoN").disabled = true;
+
+                    } else {
+                        var formulario = document.getElementById("partidosFormulario");
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'desplegarPartidos',
+                                idEquipo: input
+                            },
+                            success: function(response) {
+                                if (response == false) {
+                                    iziToast.info({
+                                        title: "Partidos",
+                                        message: "Este equipo no tiene partidos que borrar",
+                                        position: "topLeft"
+
+                                    });
+                                    document.getElementById("borrarPartidoC").disabled = true;
+                                    document.getElementById("borrarPartidoN").disabled = true;
+                                } else {
+                                    formulario.elements.inputPartidos.disabled = false;
+                                    var contenedorPartidos = document.getElementById("myPartidosModal");
+                                    const partidos = contenedorPartidos.getElementsByTagName("select")[1];
+
+                                    for (var i = 0; i < response.length; i++) {
+                                        var item = response[i];
+                                        const option = document.createElement("option");
+                                        option.id = ""+item.ID;
+                                        option.value = ""+item.ID;
+                                        option.textContent = ""+item.Rival+" "+item.Campeonato+" "+item.Jornada;
+                                        partidos.appendChild(option);
+                                    }
+                                }    
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error desplegando los Jugadores, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+                    }
+                });
+
+                $(contenedorPartidos).on('blur', "select[id^='inputPartidos']", function (e) {
+                    var input = $(e.target).val();
+                    if (input == "") {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Debes elegir un partido valido.",
+                            position: "topLeft"
+
+                        });
+                        document.getElementById("borrarPartidoC").disabled = true;
+                        document.getElementById("borrarPartidoN").disabled = true;
+
+                    } else {
+                        var formulario = document.getElementById("partidosFormulario");
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'elegirPartido',
+                                id: formulario.elements.inputPartidos.value
+                            },
+                            success: function(response) {
+                                for (var i = 0; i < response.length; i++) {
+                                    var item = response[i];
+                                    formulario.elements.inputRival.value = item.Rival;
+                                    formulario.elements.inputResultado.value = item.Resultado;
+                                    formulario.elements.inputCampeonato.value = item.Campeonato;
+                                    formulario.elements.inputJornada.value = item.Jornada;
+                                    formulario.elements.inputFecha.value = item.Fecha;
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error desplegando los Jugadores, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'numeroEstadisticasPartidos',
+                                id: formulario.elements.inputPartidos.value
+                            },
+                            success: function(response) {
+                                if(response == false){
+                                    formulario.elements.inputNumeroEstadisticas.value = 0;
+                                } else {
+                                    formulario.elements.inputNumeroEstadisticas.value = response;
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error desplegando los Jugadores, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+                    }
+                });
+
+                //Contenedor Estadisticas
+                var contenedorEstadisticas = document.getElementById("myEstadisticasModal");
+                $(contenedorEstadisticas).on('blur', "select[id^='inputEquipos']", function (e) {
+                    var input = $(e.target).val();
+                    if (input == "") {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Debes elegir un equipo valido.",
+                            position: "topLeft"
+
+                        });
+                        document.getElementById("borrarEstadisticasC").disabled = true;
+                        document.getElementById("borrarEstadisticasN").disabled = true;
+
+                    } else {
+                        var formulario = document.getElementById("estadisticasFormulario");
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'desplegarEstadisticas',
+                                idEquipo: input
+                            },
+                            success: function(response) {
+                                if (response == false) {
+                                    iziToast.info({
+                                        title: "Estadisticas",
+                                        message: "Este equipo no tiene estadisticas que borrar",
+                                        position: "topLeft"
+
+                                    });
+                                    document.getElementById("borrarEstadisticasC").disabled = true;
+                                    document.getElementById("borrarEstadisticasN").disabled = true;
+                                } else {
+                                    formulario.elements.inputEstadisticas.disabled = false;
+                                    var contenedorEstadisticas = document.getElementById("myEstadisticasModal");
+                                    const estadisticas = contenedorEstadisticas.getElementsByTagName("select")[1];
+
+                                    for (var i = 0; i < response.length; i++) {
+                                        var item = response[i];
+                                        const option = document.createElement("option");
+                                        option.id = ""+item.ID;
+                                        option.value = ""+item.ID;
+                                        option.textContent = ""+item.Nombre+" "+item.Apellidos+" - "+item.Rival+" "+item.Campeonato+" "+item.Jornada;
+                                        estadisticas.appendChild(option);
+                                    }
+                                }    
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error desplegando las estadisticas, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+                    }
+                });
+
+                $(contenedorEstadisticas).on('blur', "select[id^='inputEstadisticas']", function (e) {
+                    var input = $(e.target).val();
+                    if (input == "") {
+                        iziToast.error({
+                            title: "Error",
+                            message: "Debes elegir una estadistica valido.",
+                            position: "topLeft"
+
+                        });
+                        document.getElementById("borrarEstadisticasC").disabled = true;
+                        document.getElementById("borrarEstadisticasN").disabled = true;
+
+                    } else {
+                        var formulario = document.getElementById("estadisticasFormulario");
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'eliminar.php',
+                            data: {
+                                accion: 'elegirEstadistica',
+                                id: formulario.elements.inputEstadisticas.value
+                            },
+                            success: function(response) {
+                                for (var i = 0; i < response.length; i++) {
+                                    var item = response[i];
+                                    formulario.elements.inputLanzamientos.value = item.Lanzamientos;
+                                    formulario.elements.inputGoles.value = item.Goles;
+                                    formulario.elements.inputPerdidas.value = item.Perdidas;
+                                    formulario.elements.inputRecuperaciones.value = item.Recuperaciones;
+                                    formulario.elements.inputPorteroLanzamientos.value = item.LanzamientosP;
+                                    formulario.elements.inputParadas.value = item.Paradas;
+                                    formulario.elements.inputPorteroGoles.value = item.GolesRecibidos;
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: "Hubo un error desplegando las Estadisticas, si el problema persiste, contacta con el administrador.",
+                                    position: "topLeft"
+                                });
+                            },
+                        });
+                    }
+                });
+
+                //Botones de borrar Equipos
+                $(document).on('click',"#borrarEquipoC", function(e) {
+                    var formulario = document.getElementById("equiposFormulario");
+                    iziToast.question({
+                        timeout: 20000,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'question',
+                        zindex: 999,
+                        title: 'Eliminar',
+                        message: '&iquest;Estas seguro que quieres borrar el equipo con ' + formulario.elements.inputNumeroJugadores.value + ' jugador/es, ' + formulario.elements.inputNumeroPartidos.value + ' partido/s, '+ formulario.elements.inputNumeroEstadisticas.value + ' estadistica/s?  Se borrara todo y no podras recuperarlo',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>Si', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'eliminar.php',
+                                    data: {
+                                        accion: 'borrarEquipo',
+                                        id: formulario.elements.inputEquipos.value
+                                    },
+                                    success: function(response) {
+
+                                        iziToast.success({
+                                            title: "Borrado correctamente",
+                                            message: "El equipo se ha borrado",
+                                            position: "topLeft"
+                                        });
+
+                                        window.location.href = "eliminar.php";
+
+                                    },
+                                    error: function(xhr, status, error) {
+                                        iziToast.error({
+                                            title: "Error",
+                                            message: "Hubo un error borrando el equipo, si el problema persiste, contacta con el administrador.",
+                                            position: "topLeft"
+                                        });
+                                    },
+                                });
+                    
+                            }, true],
+                            ['<button>No', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                iziToast.info({
+                                    title: "Borrado cancelado",
+                                    message: "El equipo no sera borrado",
+                                    position: "topLeft"
+                                });
+
+                                formulario.reset();
+                    
+                            }],
+                        ],
+                        
+                    });
+                });
+
+                $(document).on('click',"#borrarEquipoN", function(e) {
+                    var formulario = document.getElementById("equiposFormulario");
+                    iziToast.question({
+                        timeout: 20000,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'question',
+                        zindex: 999,
+                        title: 'Eliminar',
+                        message: '&iquest;Estas seguro que quieres borrar el equipo con ' + formulario.elements.inputNumeroJugadores.value + ' jugador/es, ' + formulario.elements.inputNumeroPartidos.value + ' partido/s, '+ formulario.elements.inputNumeroEstadisticas.value + ' estadistica/s?  Se borrara todo y no podras recuperarlo',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>Si', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'eliminar.php',
+                                    data: {
+                                        accion: 'borrarEquipo',
+                                        id: formulario.elements.inputEquipos.value
+                                    },
+                                    success: function(response) {
+
+                                        iziToast.success({
+                                            title: "Borrado correctamente",
+                                            message: "El equipo se ha borrado",
+                                            position: "topLeft"
+                                        });
+                                        var contenedorEquipos = document.getElementById("myEquiposModal");
+                                        const equipos = contenedorEquipos.getElementsByTagName("select")[0];
+
+                                        var opciones = equipos.getElementsByTagName("option");
+                                        for (var i = 0; i < opciones.length; i++) {
+                                            var opcion = opciones[i];
+                                            if(opcion.id == formulario.elements.inputEquipos.value){
+                                                equipos.removeChild(opcion);
+                                            }  
+                                        }
+
+                                        formulario.reset();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        iziToast.error({
+                                            title: "Error",
+                                            message: "Hubo un error borrando el equipo, si el problema persiste, contacta con el administrador.",
+                                            position: "topLeft"
+                                        });
+                                    },
+                                });
+                    
+                            }, true],
+                            ['<button>No', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                iziToast.info({
+                                    title: "Borrado cancelado",
+                                    message: "El equipo no sera borrado",
+                                    position: "topLeft"
+                                });
+
+                                formulario.reset();
+                    
+                            }],
+                        ],
+                        
+                    });
+                });
+
+                //Botones de borrar Jugadores
+                $(document).on('click',"#borrarJugadorC", function(e) {
+                    var formulario = document.getElementById("jugadoresFormulario");
+                    iziToast.question({
+                        timeout: 20000,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'question',
+                        zindex: 999,
+                        title: 'Eliminar',
+                        message: '&iquest;Estas seguro que quieres borrar el jugador con ' + formulario.elements.inputNumeroPartidos.value + ' partido/s jugado/s? Se borrara todo y no podras recuperarlo',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>Si', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'eliminar.php',
+                                    data: {
+                                        accion: 'borrarJugador',
+                                        id: formulario.elements.inputJugadores.value
+                                    },
+                                    success: function(response) {
+
+                                        iziToast.success({
+                                            title: "Borrado correctamente",
+                                            message: "El jugador se ha borrado",
+                                            position: "topLeft"
+                                        });
+
+                                        window.location.href = "eliminar.php";
+
+                                    },
+                                    error: function(xhr, status, error) {
+                                        iziToast.error({
+                                            title: "Error",
+                                            message: "Hubo un error borrando el jugador, si el problema persiste, contacta con el administrador.",
+                                            position: "topLeft"
+                                        });
+                                    },
+                                });
+                    
+                            }, true],
+                            ['<button>No', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                iziToast.info({
+                                    title: "Borrado cancelado",
+                                    message: "El jugador no sera borrado",
+                                    position: "topLeft"
+                                });
+
+                                formulario.reset();
+                    
+                            }],
+                        ],
+                        
+                    });
+                });
+
+                $(document).on('click',"#borrarJugadorN", function(e) {
+                    var formulario = document.getElementById("jugadoresFormulario");
+                    iziToast.question({
+                        timeout: 20000,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'question',
+                        zindex: 999,
+                        title: 'Eliminar',
+                        message: '&iquest;Estas seguro que quieres borrar el jugador con ' + formulario.elements.inputNumeroPartidos.value + ' partido/s jugado/s? Se borrara todo y no podras recuperarlo',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>Si', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'eliminar.php',
+                                    data: {
+                                        accion: 'borrarJugador',
+                                        id: formulario.elements.inputJugadores.value
+                                    },
+                                    success: function(response) {
+
+                                        iziToast.success({
+                                            title: "Borrado correctamente",
+                                            message: "El jugador se ha borrado",
+                                            position: "topLeft"
+                                        });
+
+                                        var contenedorJugadores = document.getElementById("myJugadoresModal");
+                                        const jugadores= contenedorJugadores.getElementsByTagName("select")[1];
+
+                                        var opciones = jugadores.getElementsByTagName("option");
+                                        for (var i = 0; i < opciones.length; i++) {
+                                            var opcion = opciones[i];
+                                            if(opcion.id == formulario.elements.inputJugadores.value){
+                                                jugadores.removeChild(opcion);
+                                            }  
+                                        }
+                                        formulario.elements.inputJugadores.disabled = true;
+                                        formulario.reset();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        iziToast.error({
+                                            title: "Error",
+                                            message: "Hubo un error borrando el jugador, si el problema persiste, contacta con el administrador.",
+                                            position: "topLeft"
+                                        });
+                                    },
+                                });
+                    
+                            }, true],
+                            ['<button>No', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                iziToast.info({
+                                    title: "Borrado cancelado",
+                                    message: "El jugador no sera borrado",
+                                    position: "topLeft"
+                                });
+
+                                formulario.reset();
+                    
+                            }],
+                        ],
+                        
+                    });
+                });
+
+                //Botones borrar Partidos
+                $(document).on('click',"#borrarPartidoC", function(e) {
+                    var formulario = document.getElementById("partidosFormulario");
+                    iziToast.question({
+                        timeout: 20000,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'question',
+                        zindex: 999,
+                        title: 'Eliminar',
+                        message: '&iquest;Estas seguro que quieres borrar el partido con ' + formulario.elements.inputNumeroEstadisticas.value + ' estadistica/s asignada/s? Se borrara todo y no podras recuperarlo',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>Si', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'eliminar.php',
+                                    data: {
+                                        accion: 'borrarPartido',
+                                        id: formulario.elements.inputPartidos.value
+                                    },
+                                    success: function(response) {
+
+                                        iziToast.success({
+                                            title: "Borrado correctamente",
+                                            message: "El partido se ha borrado",
+                                            position: "topLeft"
+                                        });
+
+                                        window.location.href = "eliminar.php";
+
+                                    },
+                                    error: function(xhr, status, error) {
+                                        iziToast.error({
+                                            title: "Error",
+                                            message: "Hubo un error borrando el partido, si el problema persiste, contacta con el administrador.",
+                                            position: "topLeft"
+                                        });
+                                    },
+                                });
+                    
+                            }, true],
+                            ['<button>No', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                iziToast.info({
+                                    title: "Borrado cancelado",
+                                    message: "El partido no sera borrado",
+                                    position: "topLeft"
+                                });
+
+                                formulario.reset();
+                    
+                            }],
+                        ],
+                        
+                    });
+                });
+
+                $(document).on('click',"#borrarPartidoN", function(e) {
+                    var formulario = document.getElementById("partidosFormulario");
+                    iziToast.question({
+                        timeout: 20000,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'question',
+                        zindex: 999,
+                        title: 'Eliminar',
+                        message: '&iquest;Estas seguro que quieres borrar el partido con ' + formulario.elements.inputNumeroEstadisticas.value + ' estadistica/s asignada/s? Se borrara todo y no podras recuperarlo',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>Si', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'eliminar.php',
+                                    data: {
+                                        accion: 'borrarPartido',
+                                        id: formulario.elements.inputPartidos.value
+                                    },
+                                    success: function(response) {
+
+                                        iziToast.success({
+                                            title: "Borrado correctamente",
+                                            message: "El partido se ha borrado",
+                                            position: "topLeft"
+                                        });
+
+                                        var contenedorPartidos = document.getElementById("myPartidosModal");
+                                        const partidos= contenedorPartidos.getElementsByTagName("select")[1];
+
+                                        var opciones = partidos.getElementsByTagName("option");
+                                        for (var i = 0; i < opciones.length; i++) {
+                                            var opcion = opciones[i];
+                                            if(opcion.id == formulario.elements.inputPartidos.value){
+                                                partidos.removeChild(opcion);
+                                            }  
+                                        }
+                                        formulario.elements.inputPartidos.disabled = true;
+                                        formulario.reset();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        iziToast.error({
+                                            title: "Error",
+                                            message: "Hubo un error borrando el partido, si el problema persiste, contacta con el administrador.",
+                                            position: "topLeft"
+                                        });
+                                    },
+                                });
+                    
+                            }, true],
+                            ['<button>No', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                iziToast.info({
+                                    title: "Borrado cancelado",
+                                    message: "El partido no sera borrado",
+                                    position: "topLeft"
+                                });
+
+                                formulario.reset();
+                    
+                            }],
+                        ],
+                        
+                    });
+                });
+
+                //Botones borrar Estadisticas
+                $(document).on('click',"#borrarEstadisticasC", function(e) {
+                    var formulario = document.getElementById("estadisticasFormulario");
+                    iziToast.question({
+                        timeout: 20000,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'question',
+                        zindex: 999,
+                        title: 'Eliminar',
+                        message: '&iquest;Estas seguro que quieres borrar la estadistica? Se borrara todo y no podras recuperarlo',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>Si', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'eliminar.php',
+                                    data: {
+                                        accion: 'borrarEstadistica',
+                                        id: formulario.elements.inputEstadisticas.value
+                                    },
+                                    success: function(response) {
+
+                                        iziToast.success({
+                                            title: "Borrado correctamente",
+                                            message: "La estadistica se ha borrado",
+                                            position: "topLeft"
+                                        });
+
+                                        window.location.href = "eliminar.php";
+
+                                    },
+                                    error: function(xhr, status, error) {
+                                        iziToast.error({
+                                            title: "Error",
+                                            message: "Hubo un error borrando la estadistica, si el problema persiste, contacta con el administrador.",
+                                            position: "topLeft"
+                                        });
+                                    },
+                                });
+                    
+                            }, true],
+                            ['<button>No', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                iziToast.info({
+                                    title: "Borrado cancelado",
+                                    message: "La estadistica no sera borrado",
+                                    position: "topLeft"
+                                });
+
+                                formulario.reset();
+                    
+                            }],
+                        ],
+                        
+                    });
+                });
+
+                $(document).on('click',"#borrarEstadisticasN", function(e) {
+                    var formulario = document.getElementById("estadisticasFormulario");
+                    iziToast.question({
+                        timeout: 20000,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'question',
+                        zindex: 999,
+                        title: 'Eliminar',
+                        message: '&iquest;Estas seguro que quieres borrar la estadistica? Se borrara todo y no podras recuperarlo',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>Si', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'eliminar.php',
+                                    data: {
+                                        accion: 'borrarEstadistica',
+                                        id: formulario.elements.inputEstadisticas.value
+                                    },
+                                    success: function(response) {
+
+                                        iziToast.success({
+                                            title: "Borrado correctamente",
+                                            message: "La estadistica se ha borrado",
+                                            position: "topLeft"
+                                        });
+
+                                        var contenedorEstadisticas = document.getElementById("myEstadisticasModal");
+                                        const estadisticas = contenedorEstadisticas.getElementsByTagName("select")[1];
+
+                                        var opciones = estadisticas.getElementsByTagName("option");
+                                        for (var i = 0; i < opciones.length; i++) {
+                                            var opcion = opciones[i];
+                                            if(opcion.id == formulario.elements.inputEstadisticas.value){
+                                                estadisticas.removeChild(opcion);
+                                            }  
+                                        }
+                                        formulario.elements.inputEstadisticas.disabled = true;
+                                        formulario.reset();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        iziToast.error({
+                                            title: "Error",
+                                            message: "Hubo un error borrando la estadistica, si el problema persiste, contacta con el administrador.",
+                                            position: "topLeft"
+                                        });
+                                    },
+                                });
+                    
+                            }, true],
+                            ['<button>No', function (instance, toast) {
+                    
+                                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                                iziToast.info({
+                                    title: "Borrado cancelado",
+                                    message: "La estadistica no sera borrado",
+                                    position: "topLeft"
+                                });
+
+                                formulario.reset();
+                    
+                            }],
+                        ],
+                        
+                    });
+                });
+            });
+            
+            var modalEquipos = document.getElementById("myEquiposModal");
+            function openModalEquipos() {
+                modalEquipos.style.display = "block";
+            }
+
+            var modalJugadores = document.getElementById("myJugadoresModal");
+            function openModalJugadores() {
+                modalJugadores.style.display = "block";
+            }
+
+            var modalPartidos = document.getElementById("myPartidosModal");
+            function openModalPartidos() {
+                modalPartidos.style.display = "block";
+            }
+
+            var modalEstadisticas = document.getElementById("myEstadisticasModal");
+            function openModalEstadisticas() {
+                modalEstadisticas.style.display = "block";
+            }
+
+
+            var span = document.getElementsByClassName("close")[0];
+            function closeModal() {
+                window.location.href = "eliminar.php";
+            }
+            window.onclick = function(event) {
+                if (event.target === modalEquipos) {
+                    closeModal();
+                } else if (event.target === modalJugadores) {
+                    closeModal();
+                } else if (event.target === modalPartidos) {
+                    closeModal();
+                } else if(event.target === modalEstadisticas){
+                    closeModal();
+                }
+            }
+
+        </script>
+    </body>
+</html>

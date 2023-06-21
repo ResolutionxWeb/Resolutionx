@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Equipos</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="assets/styles/app.css" rel="stylesheet" />
+        <link rel="stylesheet" href="assets/iziToast-master/dist/css/iziToast.min.css">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3">Resolutionx</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" onclick="eliminarRegistros()">Eliminar Registros</a></li>
+                        <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar Sesion</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Equipos</div>
+                            <a class="nav-link" href="equipos.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                                Equipos
+                            </a>
+                            <a class="nav-link" onclick="openModal()">
+                                <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                                Crear Equipo
+                            </a>
+                        </div>                          
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Equipos</h1>
+                        <div id="equipos" class="row">
+                            
+                        </div>
+                        <div id="myModal" class="modal">
+                            <div class="modal-content">
+                              <span class="close" onclick="closeModal()">&times;</span>
+                              <h2>Crear equipo</h2>
+                                <form id="formulario">
+                                    <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputNombre">Nombre</label>
+                                        <input type="text" class="form-control" id="inputNombre" placeholder="Nombre Equipo" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputLugar">Lugar</label>
+                                        <input type="text" class="form-control" id="inputLugar" placeholder="Lugar del club" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputCategoria">Categoria</label>
+                                        <input type="text" class="form-control" id="inputCategoria" placeholder="Categoria" required>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputTemporada">Temporada</label>
+                                            <input type="text" class="form-control" id="inputTemporada" placeholder="Temporada" required>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <button id="crearEquipoC"  class="btn btn-primary">Crear Equipo y cerrar</button>
+                                        <button id="crearEquipoN"  class="btn btn-primary">Crear Equipo y nuevo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; 2023 Alejandro Fernandez Tolosa ResolutionX - Todos los derechos reservados.</div> 
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="assets/equipos.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="assets/jquery.min.js"></script>
+        <script src="assets/iziToast-master/dist/js/iziToast.min.js"></script>
+
+        <script>
+            window.addEventListener("load", function(event) {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: 'equipos.php',
+                    data: {
+                        accion: 'desplegarEquipos'
+                    },
+                    success: function(response) {
+                        var cajaEquipos = document.getElementById("equipos");
+                        for (var i = 0; i < response.length; i++) {
+                            var item = response[i];
+                            cajaEquipos.innerHTML = cajaEquipos.innerHTML + '<div class="col-xl-3 col-md-6">'
+                                 + '<div class="card bg-primary text-white mb-4">'
+                                     + '<div class="card-body">'+item.Nombre+'</div>'
+                                         + '<div id="Equipo_'+item.ID + '" class="card-footer d-flex align-items-center justify-content-between">'
+                                             + '<a class="small text-white stretched-link" onclick="seleccionarEquipo('+item.ID+')">'+item.Categoria+' - '+item.Temporada +'</a>'
+                                             + '<div class="small text-white"><i class="fas fa-angle-right"></i></div>'
+                                         + '</div>'
+                                 + '</div>'
+                             + '</div>';
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        iziToast.error({
+                        title: "Error",
+                        message: "No se pudo desplegar el equipo, si el problema persiste, contacta con el administrador",
+                        position: "topLeft"
+                    });
+                    },
+                });
+            });
+
+            function seleccionarEquipo(id) {
+                $.ajax({
+                    url: 'equipos.php',
+                    type: 'POST',
+                    data: {
+                        accion: 'seleccionarEquipo',
+                        idEquipo: id
+                    },
+                    success: function(response) {
+                        window.location.href = "equipo.php";
+                    },
+                    error: function(xhr, status, error) {
+                        iziToast.error({
+                        title: "Error",
+                        message: "No se pudo seleccionar el equipo, si el problema persiste, contacta con el administrador",
+                        position: "topLeft"
+                    });
+                    },
+                });
+            }
+
+            function eliminarRegistros(){
+                window.location.href = "eliminar.php";
+            }
+
+            function cerrarSesion() {
+                $.ajax({
+                    url: 'controllers/sql.php',
+                    type: 'POST',
+                    data: {
+                        accion: 'cerrarSesion'
+                    },
+                    success: function(response) {
+                        window.location.href = "login.html";
+                    },
+                    error: function(xhr, status, error) {
+                        iziToast.error({
+                        title: "Error",
+                        message: "No se pudo cerrar sesion, si el problema persiste, contacta con el administrador",
+                        position: "topLeft"
+                    });
+                    },
+                });
+            }
+
+            $(document).ready(function() {
+                $(document).on('change',"input[id^='inputTemporada']", function(e) {
+                    var input = $(e.target).val();
+                    var temporada = input.split("/");
+                    if(temporada[1] == null){
+                        iziToast.error({
+                            title:"Error",
+                            message:"El formato de la temporada no es valido(Nº1/Nº2)",
+                            position:"topLeft"
+                            
+                        });
+                        document.getElementById("crearEquipoC").disabled = true;
+                        document.getElementById("crearEquipoN").disabled = true;
+                    } else if(input.length != 5){
+                        iziToast.error({
+                            title:"Error",
+                            message:"El formato de la temporada no es valido debe tener 5 digitos(XX/XX)",
+                            position:"topLeft"
+                            
+                        });
+                        document.getElementById("crearEquipoC").disabled = true;
+                        document.getElementById("crearEquipoN").disabled = true;
+                    } else {
+                        if(parseInt(temporada[0])+1 == temporada[1]){
+                            document.getElementById("crearEquipoC").disabled = false;
+                            document.getElementById("crearEquipoN").disabled = false;
+                        } else {
+                            iziToast.error({
+                                title:"Error",
+                                message:"El formato de la temporada no es valido(Nº1/Nº2), el Nº1 debe ser un año antes que el Nº2",
+                                position:"topLeft"
+                            });
+                            document.getElementById("crearEquipoC").disabled = true;
+                            document.getElementById("crearEquipoN").disabled = true;
+                        }
+                    }
+                });
+
+                $(document).on('click',"#crearEquipoC", function(e) {
+
+                    var formulario = document.getElementById("formulario");
+                    if(formulario.elements.inputNombre.value != "" && formulario.elements.inputLugar.value != "" && formulario.elements.inputCategoria.value != "" && formulario.elements.inputTemporada.value != ""){
+                        $.ajax({
+                            url: 'equipos.php',
+                            type: 'POST',
+                            data: {
+                                accion: 'crearEquipo',
+                                nombre: formulario.elements.inputNombre.value,
+                                lugar: formulario.elements.inputLugar.value,
+                                categoria: formulario.elements.inputCategoria.value,
+                                temporada: formulario.elements.inputTemporada.value
+                            },
+                            success: function(response) {
+                                iziToast.success({
+                                    title: 'Insertado',
+                                    message: 'Equipo insertado correctamente',
+                                    position:"topLeft"
+                                });
+
+                                window.location.href = "equipos.php";
+                                
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title:"Error",
+                                    message:"No se pudo crear el equipo algo salio mal",
+                                    position:"topLeft"
+                                    
+                                });
+                            },
+                        });
+                    } else {
+                        iziToast.error({
+                            title:"Error",
+                            message:"No se puede crear el equipo con valores vacios",
+                            position:"topLeft"
+                            
+                        });
+                    }
+                });
+
+                $(document).on('click',"#crearEquipoN", function(e) {
+
+                    var formulario = document.getElementById("formulario");
+                    if(formulario.elements.inputNombre.value != "" && formulario.elements.inputLugar.value != "" && formulario.elements.inputCategoria.value != "" && formulario.elements.inputTemporada.value != ""){
+                        $.ajax({
+                            url: 'equipos.php',
+                            type: 'POST',
+                            data: {
+                                accion: 'crearEquipo',
+                                nombre: formulario.elements.inputNombre.value,
+                                lugar: formulario.elements.inputLugar.value,
+                                categoria: formulario.elements.inputCategoria.value,
+                                temporada: formulario.elements.inputTemporada.value
+                            },
+                            success: function(response) {
+                                iziToast.success({
+                                    title: 'Insertado',
+                                    message: 'Equipo insertado correctamente',
+                                    position:"topLeft"
+                                });
+
+                                formulario.reset();
+                                
+                            },
+                            error: function(xhr, status, error) {
+                                iziToast.error({
+                                    title:"Error",
+                                    message:"No se pudo crear el equipo algo salio mal",
+                                    position:"topLeft"
+                                    
+                                });
+                            },
+                        });
+                    } else {
+                        iziToast.error({
+                            title:"Error",
+                            message:"No se puede crear el equipo con valores vacios",
+                            position:"topLeft"
+                            
+                        });
+                    }
+                });
+            });
+            
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+
+            function openModal() {
+                modal.style.display = "block";
+            }
+            function closeModal() {
+                window.location.href = "equipos.php";
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            }
+
+        </script>
+    </body>
+</html>

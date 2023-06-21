@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Equipos</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet">
+    <link href="assets/styles/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/iziToast-master/dist/css/iziToast.min.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3">Resolutionx</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+            </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" onclick="eliminarRegistros()">Eliminar Registros</a></li>
+                    <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar Sesion</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Equipos</div>
+                        <a class="nav-link" href="equipos.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                            Equipos
+                        </a>
+                        <a class="nav-link" href="equipo.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                            Equipo actual
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Jugadores</div>
+                        <a class="nav-link" href="jugadores.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                            Jugadores
+                        </a>
+                        <a class="nav-link" onclick="openModal()">
+                            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                            Crear Jugadores
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Partidos</div>
+                        <a class="nav-link" href="partidos.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-p"></i></div>
+                            Partidos
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Estadisticas</div>
+                        <a class="nav-link" href="estadisticas.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-column"></i></div>
+                            Estadisticas
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 id="nombreEquipo" class="mt-4">Sinfin Femenino</h1>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Jugadores
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>Dorsal</th>
+                                        <th>Nombre</th>
+                                        <th>Apellidos</th>
+                                        <th>Posicion</th>
+                                        <th>DNI</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Dorsal</th>
+                                        <th>Nombre</th>
+                                        <th>Apellidos</th>
+                                        <th>Posicion</th>
+                                        <th>DNI</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody id="jugadores">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="myModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeModal()">&times;</span>
+                                <h2>Crear Jugador</h2>
+                                <form id="formulario">
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputNombre">Nombre</label>
+                                            <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" required>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputApellidos">Apellidos</label>
+                                            <input type="text" class="form-control" id="inputApellidos" placeholder="Apellidos" required>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPosicion">Posicion</label>
+                                            <select class="form-control" id="inputPosicion" placeholder="Posicion" required>
+                                                <option value="">-- Seleccionar Posicion --</option>
+                                                <option value="Extremo Izquierdo">Extremo Izquierdo</option>
+                                                <option value="Larteral Izquierdo">Larteral Izquierdo</option>
+                                                <option value="Central">Central</option>
+                                                <option value="Larteral Derecho">Larteral Derecho</option>
+                                                <option value="Extremo Derecho">Extremo Derecho</option>
+                                                <option value="Pivote">Pivote</option>
+                                                <option value="Portero">Portero</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputDorsal">Dorsal</label>
+                                            <input type="number" class="form-control" id="inputDorsal" placeholder="Dorsal" required>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputDNI">DNI</label>
+                                            <input type="text" class="form-control" id="inputDNI" placeholder="DNI" required>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <button id="crearJugadorC" class="btn btn-primary">Crear Jugador y cerrar</button>
+                                        <button id="crearJugadorN" class="btn btn-primary">Crear Jugador y nuevo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; 2023 Alejandro Fernandez Tolosa ResolutionX - Todos los
+                            derechos reservados.</div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="assets/equipos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="assets/jquery.min.js"></script>
+    <script src="assets/iziToast-master/dist/js/iziToast.min.js"></script>
+
+    <script>
+        window.addEventListener("load", function (event) {
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: 'jugadores.php',
+                data: {
+                    accion: 'desplegarJugadores'
+                },
+                success: function (response) {
+                    var tabla = document.getElementById("datatablesSimple");
+
+                    var cajaJugadores = tabla.getElementsByTagName("tbody")[0];
+                    cajaJugadores.innerHTML = "";
+                    for (var i = 0; i < response.length; i++) {
+                        var item = response[i];
+                        cajaJugadores.innerHTML = cajaJugadores.innerHTML + '<tr>'
+                            + '<td>' + item.Dorsal + ''
+                            + '<td>' + item.Nombre + ''
+                            + '<td>' + item.Apellidos + ''
+                            + '<td>' + item.Posicion + ''
+                            + '<td>' + item.DNI + ''
+                            + '';
+                    }
+
+                    const datatablesSimple = document.getElementById('datatablesSimple');
+                    if (datatablesSimple) {
+                        new simpleDatatables.DataTable(datatablesSimple);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "Hubo un error desplegando los jugadores, si el problema persiste, contacta con el administrador.",
+                        position: "topLeft"
+                    });
+                },
+            });
+        });
+
+        function eliminarRegistros(){
+            window.location.href = "eliminar.php";
+        }
+
+        function cerrarSesion() {
+            $.ajax({
+                url: 'controllers/sql.php',
+                type: 'POST',
+                data: {
+                    accion: 'cerrarSesion'
+                },
+                success: function (response) {
+                    window.location.href = "login.html";
+                },
+                error: function (xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "No se pudo cerrar sesion, si el problema persiste, contacta con el administrador",
+                        position: "topLeft"
+                    });
+                },
+            });
+        }
+
+        function validarDNI(dni) {
+            var letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            var numero = dni.substr(0, dni.length - 1);
+            var letra = dni.substr(dni.length - 1).toUpperCase();
+            var indice = parseInt(numero) % 23;
+
+            if (letras.charAt(indice) === letra) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        $(document).ready(function () {
+            $(document).on('blur', "select[id^='inputPosicion']", function (e) {
+                var input = $(e.target).val();
+                if (input == "") {
+                    iziToast.error({
+                        title: "Error",
+                        message: "Debes elegir una posicion valida.",
+                        position: "topLeft"
+
+                    });
+                    document.getElementById("crearJugadorC").disabled = true;
+                    document.getElementById("crearJugadorN").disabled = true;
+                    document.getElementById("inputDorsal").disabled = true;
+                    document.getElementById("inputDNI").disabled = true;
+
+                } else {
+                    document.getElementById("crearJugadorC").disabled = false;
+                    document.getElementById("crearJugadorN").disabled = false;
+                    document.getElementById("inputDorsal").disabled = false;
+                    document.getElementById("inputDNI").disabled = false;
+                }
+            });
+
+            $(document).on('change', "input[id^='inputDorsal']", function (e) {
+                var input = $(e.target).val();
+                if (input <= 0) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "El dorsal no puede ser menor de 1",
+                        position: "topLeft"
+
+                    });
+                    document.getElementById("crearJugadorC").disabled = true;
+                    document.getElementById("crearJugadorN").disabled = true;
+                    document.getElementById("inputPosicion").disabled = true;
+                    document.getElementById("inputDNI").disabled = true;
+                } else {
+                    $.ajax({
+                        url: 'jugadores.php',
+                        type: 'POST',
+                        data: {
+                            accion: 'comprobarDorsal',
+                            id: input,
+                        },
+                        success: function (response) {
+                            if (response == true) {
+                                document.getElementById("crearJugadorC").disabled = false;
+                                document.getElementById("crearJugadorN").disabled = false;
+                                document.getElementById("inputPosicion").disabled = false;
+                                document.getElementById("inputDNI").disabled = false;
+                            } else {
+                                iziToast.warning({
+                                    title: "Dorsal",
+                                    message: "Dorsal no disponible, no se puede tener dorsales repetidos",
+                                    position: "topLeft"
+                                });
+                                document.getElementById("crearJugadorC").disabled = true;
+                                document.getElementById("crearJugadorN").disabled = true;
+                                document.getElementById("inputPosicion").disabled = true;
+                                document.getElementById("inputDNI").disabled = true;
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: "Algo salio mal buscando el Dorsal",
+                                position: "topLeft"
+                            });
+                            document.getElementById("crearJugadorC").disabled = true;
+                            document.getElementById("crearJugadorN").disabled = true;
+                            document.getElementById("inputPosicion").disabled = true;
+                            document.getElementById("inputDNI").disabled = true;
+                        },
+                    });
+                }
+            });
+
+            $(document).on('change', "input[id^='inputDNI']", function (e) {
+                var input = $(e.target).val();
+                if (input.length != 9) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "La longitud del DNI tiene que ser de 9",
+                        position: "topLeft"
+
+                    });
+                    document.getElementById("crearJugadorC").disabled = true;
+                    document.getElementById("crearJugadorN").disabled = true;
+                    document.getElementById("inputDorsal").disabled = true;
+                    document.getElementById("inputPosicion").disabled = true;
+                } else if (!validarDNI(input)) {
+                    iziToast.error({
+                        title: "Error",
+                        message: "El DNI no es valido",
+                        position: "topLeft"
+                    });
+                    document.getElementById("crearJugadorC").disabled = true;
+                    document.getElementById("crearJugadorN").disabled = true;
+                    document.getElementById("inputDorsal").disabled = true;
+                    document.getElementById("inputPosicion").disabled = true;
+                } else {
+                    $.ajax({
+                        url: 'jugadores.php',
+                        type: 'POST',
+                        data: {
+                            accion: 'comprobarDNI',
+                            dni: input
+                        },
+                        success: function (response) {
+                            if (response == true) {
+                                document.getElementById("crearJugadorC").disabled = false;
+                                document.getElementById("crearJugadorN").disabled = false;
+                                document.getElementById("inputDorsal").disabled = false;
+                                document.getElementById("inputPosicion").disabled = false;
+                            } else {
+                                iziToast.warning({
+                                    title: "DNI",
+                                    message: "DNI no disponible, no se puede tener DNIs repetidos",
+                                    position: "topLeft"
+                                });
+                                document.getElementById("crearJugadorC").disabled = true;
+                                document.getElementById("crearJugadorN").disabled = true;
+                                document.getElementById("inputDorsal").disabled = true;
+                                document.getElementById("inputPosicion").disabled = true;
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: "Algo salio mal buscando el DNI",
+                                position: "topLeft"
+                            });
+                            document.getElementById("crearJugadorC").disabled = true;
+                            document.getElementById("crearJugadorN").disabled = true;
+                            document.getElementById("inputDorsal").disabled = true;
+                            document.getElementById("inputPosicion").disabled = true;
+                        },
+                    });
+                }
+            });
+
+            $(document).on('click',"#crearJugadorC", function(e) {
+                var formulario = document.getElementById("formulario");
+                if(formulario.elements.inputDNI.value != "" && formulario.elements.inputNombre.value != "" && formulario.elements.inputApellidos.value != "" && formulario.elements.inputPosicion.value != "" && formulario.elements.inputDorsal.value != ""){
+                    $.ajax({
+                        url: 'jugadores.php',
+                        type: 'POST',
+                        data: {
+                            accion: 'crearJugador',
+                            dni: formulario.elements.inputDNI.value,
+                            nombre: formulario.elements.inputNombre.value,
+                            apellidos: formulario.elements.inputApellidos.value,
+                            posicion: formulario.elements.inputPosicion.value,
+                            dorsal: formulario.elements.inputDorsal.value
+                        },
+                        success: function (response) {
+                            iziToast.success({
+                                title: 'Insertado',
+                                message: 'Jugador insertado correctamente',
+                                position: "topLeft"
+                            });
+
+                            window.location.href = "jugadores.php";
+
+                        },
+                        error: function (xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: "No se pudo crear el jugador algo salio mal",
+                                position: "topLeft"
+                            });
+                        },
+                    });
+                } else {
+                    iziToast.error({
+                        title: "Error",
+                        message: "No se puede crear un jugador con valores vacios",
+                        position: "topLeft"
+
+                    });
+                }
+            });
+
+            $(document).on('click',"#crearJugadorN", function(e) {
+                var formulario = document.getElementById("formulario");
+                if(formulario.elements.inputDNI.value != "" && formulario.elements.inputNombre.value != "" && formulario.elements.inputApellidos.value != "" && formulario.elements.inputPosicion.value != "" && formulario.elements.inputDorsal.value != ""){
+                    $.ajax({
+                        url: 'jugadores.php',
+                        type: 'POST',
+                        data: {
+                            accion: 'crearJugador',
+                            dni: formulario.elements.inputDNI.value,
+                            nombre: formulario.elements.inputNombre.value,
+                            apellidos: formulario.elements.inputApellidos.value,
+                            posicion: formulario.elements.inputPosicion.value,
+                            dorsal: formulario.elements.inputDorsal.value
+                        },
+                        success: function (response) {
+                            iziToast.success({
+                                title: 'Insertado',
+                                message: 'Jugador insertado correctamente',
+                                position: "topLeft"
+                            });
+
+                            formulario.reset();
+
+                        },
+                        error: function (xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: "No se pudo crear el jugador algo salio mal",
+                                position: "topLeft"
+
+                            });
+                        },
+                    });
+                } else {
+                    iziToast.error({
+                        title: "Error",
+                        message: "No se puede crear un jugador con valores vacios",
+                        position: "topLeft"
+                    });
+                }
+            });
+        });
+
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        function openModal() {
+            modal.style.display = "block";
+        }
+        function closeModal() {
+            window.location.href = "jugadores.php";
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+    </script>
+</body>
+
+</html>
